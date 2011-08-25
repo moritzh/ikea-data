@@ -9,7 +9,7 @@ The process is split in 2 parts, the first one is retrieving the category data a
 
 To create the categories and insert all products, run
    
-   ruby main.rb
+    ruby main.rb
 
 after a short while, you should have the categories in your redis. 
 To retrieve all products, just execute
@@ -20,4 +20,5 @@ and wait. This takes some time.
 
 What to do with the data?
 
-I don't know, I guess I just wanted to try nokogiri. But for the curious, there is a sinatra-server ( server.rb ) that will server both a tree at /tree.json and product data for every category. 
+I don't know, I guess I just wanted to try nokogiri. But for the curious, there is a sinatra-server ( server.rb ) that will server
+ both a tree at /tree.json and product data for every category. 
