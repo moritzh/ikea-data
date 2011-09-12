@@ -9,6 +9,7 @@ end
 
 get '/category/:id' do
   products = Product.find(:category_id => params[:id] ).all
+  puts "Category id i #{params[:id]}, found #{products.count} products."
   products.to_json
 end
 

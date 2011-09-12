@@ -22,8 +22,10 @@ class Product < Ohm::Model
         doc = Nokogiri::HTML(open("http://www.ikea.com/#{self.url}"))
         $redis = Redis.new(:host => 'localhost', :port => 6379)
         # only the script is interesting, and hopefully it's location never changes.
-        script = doc.css('div#main script')[5]
-
+        script =  nil
+        doc.css('div#main script').each do |s|
+          script = s if s.content.index("var jProductData = {")
+        end
         # rkelly parses the javascript thats inside the script tag. we use it to retrieve the "jProductData"-field
         parser = RKelly::Parser.new
         ast    = parser.parse(
@@ -33,15 +35,20 @@ class Product < Ohm::Model
         ast.each do |node|
           self.json = node.to_ecma if ( node.respond_to?(:name) && node.name == "jProductData" )
         end
-      rescue
+        
+        puts "aahh. no json for #{self.name}" if self.json.nil?
+
+          
+      rescue Exception => e
         # some info in case something goes wrong 
-        puts "had an error with #{self.name}"
+        puts "had an error with #{self.name}:#{e}"
       end
       self.save
 
     else
-      # we dont want any unparseable products to appear, so delete them
-      self.delete
+      puts "dont know how to handle #{self.url}" 
+            # we dont want any unparseable products to appear, so delete them
+      #self.delete
     end
   end
 

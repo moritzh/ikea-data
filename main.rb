@@ -30,7 +30,7 @@ Category.all.each do |category|
       name = link.css('.prodName')[0]
       if ( name )
         p.name = name.content.strip
-        puts "   #{p.name} - #{link.css('.prodDesc')[0].content.strip}"
+        puts "   #{p.name} - #{link.css('.prodDesc')[0].content.strip} - #{p.url}"
         p.save
       end
     end
